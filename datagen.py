@@ -12,13 +12,13 @@ def generate():
     x = np.arange(-5, 5, 0.1)  # define range of X
     y = x  # define range of Y
     a = 1
-    b = 1
+    b = 8
     xv, yv = np.meshgrid(x, y)  # create a mesh of all combinations of X and Y
     z = func(xv, yv, a, b)  # create ndarray of function values
 
     df = pd.DataFrame(
         {"x": xv.flatten(), "y": yv.flatten(), "z": z.flatten()})  # convert three ndarrays to pandas dataframe
-    df.to_csv("dataset.csv", index=False)  # write to csv
+    df.to_csv("dataset.csv")  # write to csv
 
 
 # define default function to call when executed directly

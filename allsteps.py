@@ -4,4 +4,4 @@ import datagen
 import plot
 
 datagen.generate()
-plot.plot()
+plot.plot_dataset()
