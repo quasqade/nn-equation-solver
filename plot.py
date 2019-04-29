@@ -26,18 +26,20 @@ def plot_points(x, y, z):
 def plot_points_to_file(x, y, z, epoch):
     xv, yv = np.meshgrid(x, y)
 
-    fig = plt.figure(figsize=plt.figaspect(0.5))
-
-    ax = fig.add_subplot(1, 2, 1)
+    #fig = plt.figure(figsize=plt.figaspect(0.5))
+    fig = plt.figure()
+    #ax = fig.add_subplot(1, 2, 1)
+    ax=plt.gca()
     ax.contourf(xv, yv, z)
     ax.set_xlabel('Surface map')
 
-    ax = fig.add_subplot(1, 2, 2, projection='3d')
-    ax.plot_surface(xv, yv, z, rstride=1, cstride=1, cmap=cm.coolwarm,
-                    linewidth=0, antialiased=False)
-    ax.set_xlabel('3D plot')
+    #ax = fig.add_subplot(1, 2, 2, projection='3d')
+    #ax.plot_surface(xv, yv, z, rstride=1, cstride=1, cmap=cm.coolwarm,
+    #                linewidth=0, antialiased=False)
+    #ax.set_xlabel('3D plot')
     #img_dir = os.makedirs(".\\IMG")
     plt.savefig('.\\IMG\\'+str(epoch)+'.png')
+    plt.close('all')
 
 
 def plot_dataset():

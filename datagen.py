@@ -5,14 +5,14 @@ import pandas as pd
 
 
 def func(x, y, a, b):
-    return (np.sin(a * (b * (x ** 2) + b * (y ** 2)))) / a
+    return (np.abs(x)/a) * np.cos(np.exp(y)) * np.sin(x**2 + y ** 2)
 
 
 def generate():
-    x = np.arange(-5, 5, 0.1)  # define range of X
-    y = x  # define range of Y
-    a = 1
-    b = 8
+    x = np.arange(-3, 3, step=0.1)  # define range of X
+    y = np.arange(-3, 3, step=0.1) # define range of Y
+    a = 10
+    b = 2
     xv, yv = np.meshgrid(x, y)  # create a mesh of all combinations of X and Y
     z = func(xv, yv, a, b)  # create ndarray of function values
 

@@ -17,11 +17,12 @@ def plot_model(model):
 # Returns a multilayer perceptron model
 def create_mlp(dimensions):
     model = Sequential()
-    model.add(Dense(128, input_dim=dimensions, activation='relu'))  # input layer requires input_dim param
+    model.add(Dense(256, input_dim=dimensions, activation='relu'))  # input layer requires input_dim param
+    model.add(Dense(128, activation="relu"))
     model.add(Dense(64, activation="relu"))
-    model.add(Dense(32, activation="relu"))
-    model.add(Dense(1, activation='linear'))  # sigmoid instead of relu for final probability
-    optimizer = keras.optimizers.Adam(lr=0.001)
+    model.add(Dense(32, activation="sigmoid"))
+    model.add(Dense(1, activation='linear'))  # relu instead of relu for final probability
+    optimizer = keras.optimizers.Adam(lr=0.0001)
     model.compile(loss="mean_squared_error", optimizer=optimizer, metrics=['mse'])
     return model
 
@@ -37,9 +38,11 @@ def train(makemovie=False):
     model = create_mlp(2)  # create a model
     print(train.head())
     testcb = outputobserver.OutputObserver(df[['x', 'y']])
-    history = model.fit(train[['x', 'y']], train[["z"]], epochs=1000, batch_size=20,
+    history = model.fit(train[['x', 'y']], train[["z"]], epochs=1000, batch_size=10,
                         validation_data=(test[['x', 'y']], test[["z"]]), verbose=1, callbacks=[testcb])  # train
+    model.save('weights.h5')
     plot.plot_history(history)
+
 
 
 # define default function to call when executed directly
