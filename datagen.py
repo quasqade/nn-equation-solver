@@ -11,8 +11,8 @@ def func(x, y, a, b):
 
 
 def get_default_range():
-    x = np.arange(-3, 3, step=0.1)  # define range of X
-    y = np.arange(-3, 3, step=0.1)  # define range of Y
+    x = np.arange(-20, 20, step=0.5)  # define range of X
+    y = np.arange(-20, 20, step=0.5)  # define range of Y
     return x, y
 
 

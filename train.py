@@ -16,7 +16,7 @@ def create_mlp(dimensions):
     model.add(Dense(64, activation="relu"))
     model.add(Dense(32, activation="sigmoid"))
     model.add(Dense(1, activation='linear'))  # relu instead of relu for final probability
-    optimizer = keras.optimizers.Adam(lr=0.0001)
+    optimizer = keras.optimizers.Adam(lr=0.001)
     model.compile(loss="mean_squared_error", optimizer=optimizer, metrics=['mse'])
     return model
 
@@ -26,15 +26,26 @@ def split(dataframe):
     return train, test
 
 
-def train(dataset, epochs, save=False, add3d=False):
+def train(dataset, epochs, earlystop, save=False, add3d=False):
     df = pd.read_csv(dataset)  # read indexed dataset
     train, test = split(df)  # split into test and training data
     model = create_mlp(2)  # create a model
-    testcb = outputobserver.OutputObserver(df[['x', 'y']], save=save, add3d=add3d)
+    callbacks = []
+    if save or add3d:
+        # callback that predicts and saves images
+        testcb = outputobserver.OutputObserver(df[['x', 'y']], save=save,
+                                               add3d=add3d)
+        callbacks.append(testcb)
+    if earlystop:
+        # callback that stops training when improvement stalls and chooses an epoch with best results
+        earlystopcb = keras.callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=epochs/20,
+                                                    restore_best_weights=True)
+        callbacks.append(earlystopcb)
+
     history = model.fit(train[['x', 'y']], train[["z"]], epochs=epochs, batch_size=10,
-                        validation_data=(test[['x', 'y']], test[["z"]]), verbose=1, callbacks=[testcb])  # train
+                        validation_data=(test[['x', 'y']], test[["z"]]), verbose=1, callbacks=callbacks)  # train
     model.save('weights.h5')
-    plot.plot_history(history,save=save)
+    plot.plot_history(history, save=save)
 
 
 # define default function to call when executed directly
