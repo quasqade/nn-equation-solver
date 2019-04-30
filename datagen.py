@@ -6,7 +6,8 @@ import plot as plot
 
 
 def func(x, y, a, b):
-    return (np.abs(x) / a) * np.cos(np.exp(y)) * np.sin(x ** 2 + y ** 2)
+    #return (np.abs(x) / a) * np.cos(np.exp(y)) * np.sin(x ** 2 + y ** 2)
+    return (np.sin(x) * np.cos(y))
 
 
 def get_default_range():
