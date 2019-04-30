@@ -4,14 +4,8 @@ import keras
 from keras.layers import Dense, Dropout
 from keras.models import Sequential
 from sklearn.model_selection import train_test_split
-import common
 import plot
 import outputobserver
-import numpy as np
-
-
-def plot_model(model):
-    x, y, z = common.read('dataset.csv')
 
 
 # Returns a multilayer perceptron model
@@ -32,17 +26,15 @@ def split(dataframe):
     return train, test
 
 
-def train(makemovie=False):
+def train(save=False, add3d=False):
     df = pd.read_csv('dataset.csv')  # read indexed dataset
     train, test = split(df)  # split into test and training data
     model = create_mlp(2)  # create a model
-    print(train.head())
-    testcb = outputobserver.OutputObserver(df[['x', 'y']])
-    history = model.fit(train[['x', 'y']], train[["z"]], epochs=1000, batch_size=10,
+    testcb = outputobserver.OutputObserver(df[['x', 'y']], save=save, add3d=add3d)
+    history = model.fit(train[['x', 'y']], train[["z"]], epochs=500, batch_size=10,
                         validation_data=(test[['x', 'y']], test[["z"]]), verbose=1, callbacks=[testcb])  # train
     model.save('weights.h5')
-    plot.plot_history(history)
-
+    plot.plot_history(history,save=save)
 
 
 # define default function to call when executed directly
