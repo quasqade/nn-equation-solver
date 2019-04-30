@@ -1,11 +1,12 @@
 # This module provides visualization tools
 
-import common
+import parameters
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import os
+import pandas as pd
 
 
 def get_img_dir():
@@ -13,6 +14,7 @@ def get_img_dir():
     if not os.path.exists(img_dir):
         os.makedirs(img_dir)
     return img_dir
+
 
 def get_plot(x, y, z, add3d=False):
     xv, yv = np.meshgrid(x, y)
@@ -46,8 +48,13 @@ def plot_points_to_file(x, y, z, epoch, add3d=False):
     plt.savefig(get_img_dir() + '\\' + str(epoch) + '.png')
     plt.close('all')
 
+
 def plot_dataset(filename, add3d=False, save=True, show=False):
-    x, y, z = common.read(filename)
+    df = pd.read_csv(filename)
+    df = df.pivot('x', 'y', 'z')
+    x = df.columns.values
+    y = df.index.values
+    z = df.values
     if (save):
         plot_points_to_file(x, y, z, epoch='source', add3d=add3d)
     if (show):

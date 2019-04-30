@@ -1,5 +1,4 @@
 # This is an example that executes all steps inculding dataset generation, visualization, training and testing
-
 import datagen
 import prediction
 import train
@@ -10,10 +9,11 @@ import numpy as np
 
 def run(existingweights=False, modelfile='', existingdataset=False, datasetfile='', epochs=500, earlystop=True,
         save=False, add3d=False):
+
     if existingweights:
         model = train.create_mlp(2)
         model.load_weights(modelfile)
-        x, y = datagen.get_default_range()
+        x, y = datagen.get_axes_range()
         xv, yv = np.meshgrid(x, y)  # create a mesh of all combinations of X and Y
         df = pd.DataFrame({"x": xv.flatten(), "y": yv.flatten()})  # convert two ndarrays to pandas dataframe
         prediction.predict(model, df, 'evaluation', show=True, save=save, add3d=add3d)
