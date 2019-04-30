@@ -26,7 +26,7 @@ def generate(filename, show=False, save=True, add3d=False):
         {"x": xv.flatten(), "y": yv.flatten(), "z": z.flatten()})  # convert three ndarrays to pandas dataframe
     df.to_csv(filename)  # write to csv
     if show or save:
-        plot.plot_dataset('dataset.csv', show=show, save=save, add3d=add3d)
+        plot.plot_dataset(filename, show=show, save=save, add3d=add3d)
 
 
 # define default function to call when executed directly

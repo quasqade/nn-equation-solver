@@ -26,7 +26,7 @@ def split(dataframe):
     return train, test
 
 
-def train(save=False, add3d=False):
+def train(dataset, save=False, add3d=False):
     df = pd.read_csv('dataset.csv')  # read indexed dataset
     train, test = split(df)  # split into test and training data
     model = create_mlp(2)  # create a model
