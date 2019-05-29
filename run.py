@@ -8,13 +8,15 @@ import pandas as pd
 import numpy as np
 
 
-def run(existingweights=False, modelfile='', existingdataset=False, datasetfile='', epochs=500, earlystop=True,
+def run(existingweights=False, modelfile='', distribution='uniform', existingdataset=False, datasetfile='', epochs=500, earlystop=True,
         save=False, add3d=False):
 
     if existingweights:
         model = train.create_mlp(2)
         model.load_weights(modelfile)
-        x, y = parameters.get_axes_range()
+        min, max = parameters.get_axes_range()
+        x = np.linspace(min, max, parameters.get_points())
+        y = np.linspace(min, max, parameters.get_points())
         xv, yv = np.meshgrid(x, y)  # create a mesh of all combinations of X and Y
         df = pd.DataFrame({"x": xv.flatten(), "y": yv.flatten()})  # convert two ndarrays to pandas dataframe
         prediction.predict(model, df, 'evaluation', show=True, save=save, add3d=add3d)
@@ -22,7 +24,7 @@ def run(existingweights=False, modelfile='', existingdataset=False, datasetfile=
         dataset = datasetfile
         if not existingdataset:
             dataset = 'dataset.csv'
-            datagen.generate(dataset, show=True, save=save, add3d=add3d)
+            datagen.generate(dataset, distribution=distribution, show=True, save=save, add3d=add3d)
         train.train(dataset, epochs, earlystop, save=save, add3d=add3d)
 
 
@@ -33,6 +35,8 @@ if __name__ == '__main__':
                         help='Specify a *.h5 file with weights to just test a model. If this argument is omitted, a new model will be created')
     parser.add_argument('--dataset', nargs=1,
                         help='Specify a *.csv dataset with 3 columns to skip generation. If this argument is omitted, a new dataset will be generated based on function in dataset.py')
+    parser.add_argument('--distribution', nargs=1,
+                        help='Select a type of distribution to use in dataset generation (uniform, random)')
     parser.add_argument('--epochs', type=int, nargs=1,
                         help='Specify how many epochs to train for')
     parser.add_argument('--earlystop', action='store_true',
@@ -50,4 +54,4 @@ if __name__ == '__main__':
             run(existingdataset=True, datasetfile=args.dataset, epochs=args.epochs[0], earlystop=args.earlystop,
                 save=args.timelapse, add3d=args.plot3d)
         else:
-            run(epochs=args.epochs[0], earlystop=args.earlystop, save=args.timelapse, add3d=args.plot3d)
+            run(epochs=args.epochs[0], distribution=args.distribution[0], earlystop=args.earlystop, save=args.timelapse, add3d=args.plot3d)

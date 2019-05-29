@@ -12,10 +12,10 @@ import parameters as params
 # Returns a multilayer perceptron model
 def create_mlp(dimensions):
     model = Sequential()
-    model.add(Dense(256, input_dim=dimensions, activation='relu'))  # input layer requires input_dim param
-    model.add(Dense(128, activation="relu"))
-    model.add(Dense(64, activation="relu"))
-    model.add(Dense(32, activation="sigmoid"))
+    model.add(Dense(16, input_dim=dimensions, activation='relu'))  # input layer requires input_dim param
+    model.add(Dense(8, activation="relu"))
+    model.add(Dense(8, activation="relu"))
+    model.add(Dense(8, activation="relu"))
     model.add(Dense(1, activation='linear'))  # relu instead of relu for final probability
     optimizer = keras.optimizers.Adam(lr=params.get_learning_rate())
     model.compile(loss="mean_squared_error", optimizer=optimizer, metrics=['mse'])

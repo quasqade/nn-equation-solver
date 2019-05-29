@@ -1,15 +1,16 @@
 # Common parameters for easy tweaking
 import numpy as np
 
-
 def get_axes_range():
-    x = np.arange(-3, 3, step=0.1)  # define range of X
-    y = np.arange(-3, 3, step=0.1)  # define range of Y
-    return x, y
+    min = -3
+    max = 3
+    return min,max
 
+def get_points():
+    return 100
 
 def get_learning_rate():
-    return 0.0001
+    return 0.001
 
 
 def get_patience():

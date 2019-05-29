@@ -31,7 +31,7 @@ def get_plot(x, y, z, add3d=False):
 
     if add3d:
         ax = fig.add_subplot(1, 2, 2, projection='3d')
-        ax.plot_surface(xv, yv, z, rstride=1, cstride=1, cmap=cm.coolwarm,
+        ax.plot_surface(xv, yv, z, rstride=1, cstride=1, cmap=cm.viridis,
                         linewidth=0, antialiased=False)
         ax.set_xlabel('3D plot')
 
